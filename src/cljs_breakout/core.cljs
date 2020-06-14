@@ -13,6 +13,7 @@
 (def dy -2)
 
 (defn draw []
+  (.clearRect ctx 0 0 (. canvas -width) (. canvas -height))
   (.beginPath ctx)
   (.arc ctx x y 10 0 (* Math.PI 2))
   (aset ctx "fillStyle" "#0095DD")
