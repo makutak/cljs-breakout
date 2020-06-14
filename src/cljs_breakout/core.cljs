@@ -12,13 +12,16 @@
 (def dx 2)
 (def dy -2)
 
-(defn draw []
-  (.clearRect ctx 0 0 (. canvas -width) (. canvas -height))
+(defn draw-ball []
   (.beginPath ctx)
   (.arc ctx x y 10 0 (* Math.PI 2))
   (aset ctx "fillStyle" "#0095DD")
   (.fill ctx)
-  (.closePath ctx)
+  (.closePath ctx))
+
+(defn draw []
+  (.clearRect ctx 0 0 (. canvas -width) (. canvas -height))
+  (draw-ball)
   (set! x (+ x dx))
   (set! y (+ y dy)))
 
