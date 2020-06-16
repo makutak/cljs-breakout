@@ -49,10 +49,26 @@
   (set! y (+ y dy)))
 
 (defn key-down-handler [e]
-  (*print-fn* "key-down-handler: " e))
+  (let [pressed (. e -key)]
+    (if (or (= "Right" pressed)
+            (= "ArrowRight" pressed))
+      (set! right-pressed true))
+    (if (or (= "Left" pressed)
+            (= "ArrowLeft" pressed))
+      (set! left-pressed true)))
+  (*print-fn* "right-pressed: " right-pressed)
+  (*print-fn* "left-pressed: " left-pressed))
 
 (defn key-up-handler [e]
-  (*print-fn* "key-up-handler: " e))
+  (let [pressed (. e -key)]
+    (if (or (= "Right" pressed)
+            (= "ArrowRight" pressed))
+      (set! right-pressed false))
+    (if (or (= "Left" pressed)
+            (= "ArrowLeft" pressed))
+      (set! left-pressed false))
+    (*print-fn* "right-pressed: " right-pressed)
+    (*print-fn* "left-pressed: " left-pressed)))
 
 (js/addEventListener "keydown" key-down-handler true)
 (js/addEventListener "keyup" key-up-handler true)
