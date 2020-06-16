@@ -14,6 +14,10 @@
 
 (def ball-radius 10)
 
+(def paddle-height 10)
+(def paddle-width 75)
+(def paddle-x (-> (. canvas -width) (- paddle-width) (/ 2)))
+
 (defn draw-ball []
   (.beginPath ctx)
   (.arc ctx x y ball-radius 0 (* Math.PI 2))
@@ -21,9 +25,17 @@
   (.fill ctx)
   (.closePath ctx))
 
+(defn draw-paddle []
+  (.beginPath ctx)
+  (.rect ctx paddle-x (- (. canvas -height) paddle-height) paddle-width paddle-height )
+  (aset ctx "fillStyle" "#0095DD")
+  (.fill ctx)
+  (.closePath ctx))
+
 (defn draw []
   (.clearRect ctx 0 0 (. canvas -width) (. canvas -height))
   (draw-ball)
+  (draw-paddle)
   (if (or (< (+ y dy) ball-radius)
           (> (+ y dy) (- (. canvas -height) ball-radius)))
     (set! dy (- dy)))
