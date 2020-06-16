@@ -18,6 +18,9 @@
 (def paddle-width 75)
 (def paddle-x (-> (. canvas -width) (- paddle-width) (/ 2)))
 
+(def right-pressed false)
+(def left-pressed false)
+
 (defn draw-ball []
   (.beginPath ctx)
   (.arc ctx x y ball-radius 0 (* Math.PI 2))
@@ -45,4 +48,12 @@
   (set! x (+ x dx))
   (set! y (+ y dy)))
 
+(defn key-down-handler [e]
+  (*print-fn* "key-down-handler: " e))
+
+(defn key-up-handler [e]
+  (*print-fn* "key-up-handler: " e))
+
+(js/addEventListener "keydown" key-down-handler true)
+(js/addEventListener "keyup" key-up-handler true)
 (js/setInterval draw 10)
