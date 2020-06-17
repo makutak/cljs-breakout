@@ -61,22 +61,33 @@
   (.clearRect ctx 0 0 (. canvas -width) (. canvas -height))
   (draw-ball)
   (draw-paddle)
-  (if (or (< (+ y dy) ball-radius)
-          (> (+ y dy) (- (. canvas -height) ball-radius)))
+
+  ;; ボール y方向の跳ね返り
+  (if (< (+ y dy) ball-radius)
     (set! dy (- dy)))
+  (if (> (+ y dy) (- (. canvas -height) ball-radius))
+    (if (> (+ x dx) paddle-x)
+      (set! dy (- dy))
+      (js/alert "GAME OVER")))
+  ;; ボール x方向の跳ね返り
   (if (or (< (+ x dx) ball-radius)
           (> (+ x dx) (- (. canvas -width) ball-radius)))
     (set! dx (- dx)))
+
+  ;; 右が押されたか
   (if (and (true? right-pressed)
            (< paddle-x (-  (. canvas -width ) paddle-width)))
     (do
       (*print-fn* "right pressed!!")
       (set! paddle-x (+ paddle-x 7))))
+
+  ;; 左が押されたか
   (if (and (true? left-pressed)
            (< 0 paddle-x))
     (do
       (*print-fn* "left pressed")
       (set! paddle-x (- paddle-x 7))))
+
   (set! x (+ x dx))
   (set! y (+ y dy)))
 
