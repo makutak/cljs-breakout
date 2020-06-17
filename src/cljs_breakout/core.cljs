@@ -21,8 +21,8 @@
 (def right-pressed false)
 (def left-pressed false)
 
-(js/addEventListener "keydown" key-down-handler true)
-(js/addEventListener "keyup" key-up-handler true)
+(declare key-down-handler key-up-handler)
+
 
 (defn key-down-handler [e]
   (let [pressed (. e -key)]
@@ -70,7 +70,19 @@
   (if (or (< (+ x dx) ball-radius)
           (> (+ x dx) (- (. canvas -width) ball-radius)))
     (set! dx (- dx)))
+  (if (and (true? right-pressed)
+           (< paddle-x (-  (. canvas -width ) paddle-width)))
+    (do
+      (*print-fn* "right pressed!!")
+      (set! paddle-x (+ paddle-x 7))))
+  (if (and (true? left-pressed)
+           (< 0 paddle-x))
+    (do
+      (*print-fn* "left pressed")
+      (set! paddle-x (- paddle-x 7))))
   (set! x (+ x dx))
   (set! y (+ y dy)))
 
+(js/addEventListener "keydown" key-down-handler true)
+(js/addEventListener "keyup" key-up-handler true)
 (js/setInterval draw 10)
