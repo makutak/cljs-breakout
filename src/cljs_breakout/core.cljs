@@ -66,7 +66,8 @@
   (if (< (+ y dy) ball-radius)
     (set! dy (- dy)))
   (if (> (+ y dy) (- (. canvas -height) ball-radius))
-    (if (> (+ x dx) paddle-x)
+    (if (and (< paddle-x x)
+             (< x (+ paddle-x paddle-width)))
       (set! dy (- dy))
       (js/alert "GAME OVER")))
   ;; ボール x方向の跳ね返り
