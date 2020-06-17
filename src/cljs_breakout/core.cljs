@@ -21,9 +21,6 @@
 (def right-pressed false)
 (def left-pressed false)
 
-(declare key-down-handler key-up-handler)
-
-
 (defn key-down-handler [e]
   (let [pressed (. e -key)]
     (if (or (= "Right" pressed)
@@ -83,6 +80,6 @@
   (set! x (+ x dx))
   (set! y (+ y dy)))
 
-(js/addEventListener "keydown" key-down-handler true)
-(js/addEventListener "keyup" key-up-handler true)
+(js/addEventListener "keydown" key-down-handler false)
+(js/addEventListener "keyup" key-up-handler false)
 (js/setInterval draw 10)
