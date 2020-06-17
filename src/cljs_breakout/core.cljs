@@ -21,6 +21,9 @@
 (def right-pressed false)
 (def left-pressed false)
 
+(js/addEventListener "keydown" key-down-handler true)
+(js/addEventListener "keyup" key-up-handler true)
+
 (defn draw-ball []
   (.beginPath ctx)
   (.arc ctx x y ball-radius 0 (* Math.PI 2))
@@ -70,6 +73,4 @@
     (*print-fn* "right-pressed: " right-pressed)
     (*print-fn* "left-pressed: " left-pressed)))
 
-(js/addEventListener "keydown" key-down-handler true)
-(js/addEventListener "keyup" key-up-handler true)
 (js/setInterval draw 10)
