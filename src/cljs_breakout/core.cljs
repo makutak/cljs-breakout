@@ -21,6 +21,8 @@
 (def right-pressed false)
 (def left-pressed false)
 
+(def interval)
+
 (defn key-down-handler [e]
   (let [pressed (. e -key)]
     (if (or (= "Right" pressed)
@@ -65,7 +67,11 @@
     (if (and (< paddle-x x)
              (< x (+ paddle-x paddle-width)))
       (set! dy (- dy))
-      (js/alert "GAME OVER")))
+      (do
+        (js/alert "GAME OVER")
+        (.reload js/document.location)
+        (js/clearInterval interval))))
+
   ;; ボール x方向の跳ね返り
   (if (or (< (+ x dx) ball-radius)
           (> (+ x dx) (- (. canvas -width) ball-radius)))
@@ -86,4 +92,4 @@
 
 (js/addEventListener "keydown" key-down-handler false)
 (js/addEventListener "keyup" key-up-handler false)
-(js/setInterval draw 10)
+(set! interval (js/setInterval draw 10))
