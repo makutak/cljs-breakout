@@ -28,9 +28,7 @@
       (set! right-pressed true))
     (if (or (= "Left" pressed)
             (= "ArrowLeft" pressed))
-      (set! left-pressed true)))
-  (*print-fn* "right-pressed: " right-pressed)
-  (*print-fn* "left-pressed: " left-pressed))
+      (set! left-pressed true))))
 
 (defn key-up-handler [e]
   (let [pressed (. e -key)]
@@ -39,9 +37,7 @@
       (set! right-pressed false))
     (if (or (= "Left" pressed)
             (= "ArrowLeft" pressed))
-      (set! left-pressed false))
-    (*print-fn* "right-pressed: " right-pressed)
-    (*print-fn* "left-pressed: " left-pressed)))
+      (set! left-pressed false))))
 
 (defn draw-ball []
   (.beginPath ctx)
@@ -78,16 +74,12 @@
   ;; 右が押されたか
   (if (and (true? right-pressed)
            (< paddle-x (-  (. canvas -width ) paddle-width)))
-    (do
-      (*print-fn* "right pressed!!")
-      (set! paddle-x (+ paddle-x 7))))
+    (set! paddle-x (+ paddle-x 7)))
 
   ;; 左が押されたか
   (if (and (true? left-pressed)
            (< 0 paddle-x))
-    (do
-      (*print-fn* "left pressed")
-      (set! paddle-x (- paddle-x 7))))
+    (set! paddle-x (- paddle-x 7)))
 
   (set! x (+ x dx))
   (set! y (+ y dy)))
