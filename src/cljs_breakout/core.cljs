@@ -69,7 +69,7 @@
       (set! dy (- (+ dy 0.5)))
       (do
         (js/alert "GAME OVER")
-        (.reload js/document.location)
+        (.reload js/window.location)
         (js/clearInterval interval))))
 
   ;; ボール x方向の跳ね返り
