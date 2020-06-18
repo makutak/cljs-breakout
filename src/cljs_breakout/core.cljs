@@ -66,7 +66,7 @@
   (if (> (+ y dy) (- (. canvas -height) ball-radius))
     (if (and (< paddle-x x)
              (< x (+ paddle-x paddle-width)))
-      (set! dy (- dy))
+      (set! dy (- (+ dy 0.5)))
       (do
         (js/alert "GAME OVER")
         (.reload js/document.location)
