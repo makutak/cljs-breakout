@@ -21,6 +21,14 @@
 (def right-pressed false)
 (def left-pressed false)
 
+(def brick-row-count 3)
+(def brick-column-count 5)
+(def brick-width 75)
+(def brick-height 20)
+(def brick-padding 10)
+(def brick-offset-top 30)
+(def brick-offset-left 30)
+
 (def interval)
 
 (defn key-down-handler [e]
