@@ -28,8 +28,13 @@
 (def brick-padding 10)
 (def brick-offset-top 30)
 (def brick-offset-left 30)
+(def bricks [])
 
 (def interval)
+
+(dotimes [c brick-column-count]
+  (dotimes [r brick-row-count]
+    (println c "+" r "="  (+ c r))))
 
 (defn key-down-handler [e]
   (let [pressed (. e -key)]
