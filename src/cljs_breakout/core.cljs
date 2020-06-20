@@ -5,7 +5,7 @@
 
 (def canvas (.getElementById js/document "my-canvas"))
 (def ctx (.getContext canvas "2d"))
-
+(def interval)
 (def x (/ (. canvas -width) 2))
 (def y (- (. canvas -height) 30))
 
@@ -28,13 +28,12 @@
 (def brick-padding 10)
 (def brick-offset-top 30)
 (def brick-offset-left 30)
-(def bricks [])
 
-(def interval)
+(def bricks (vec (repeat brick-row-count (vec (repeat brick-column-count {:x 0 :y 0})))))
 
-(dotimes [c brick-column-count]
-  (dotimes [r brick-row-count]
-    (println c "+" r "="  (+ c r))))
+;; (dotimes [c brick-column-count]
+;;   (dotimes [r brick-row-count]
+;;     (println c "+" r "="  (+ c r))))
 
 (defn key-down-handler [e]
   (let [pressed (. e -key)]
