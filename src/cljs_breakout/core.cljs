@@ -29,7 +29,8 @@
 (def brick-offset-top 30)
 (def brick-offset-left 30)
 
-(def bricks (->> (repeat brick-column-count {:x 0 :y 0})
+(def bricks (->> {:x 0 :y 0}
+                 (repeat brick-column-count)
                  (vec)
                  (repeat brick-row-count)
                  (vec)))
