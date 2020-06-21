@@ -29,11 +29,12 @@
 (def brick-offset-top 30)
 (def brick-offset-left 30)
 
-(def bricks (->> {:x 0 :y 0}
-                 (repeat brick-column-count)
-                 (vec)
-                 (repeat brick-row-count)
-                 (vec)))
+(def bricks (clj->js []))
+
+(dotimes [c brick-column-count]
+  (aset bricks c (clj->js []))
+  (dotimes [r brick-row-count]
+    (aset bricks c r (js-obj "x" 0 "y"))))
 
 (defn key-down-handler [e]
   (let [pressed (. e -key)]
@@ -67,8 +68,22 @@
   (.fill ctx)
   (.closePath ctx))
 
+(defn draw-bricks []
+  (dotimes [c brick-column-count]
+    (dotimes [r brick-row-count]
+      (let [brick-x (+ (* c (+ brick-width brick-padding)) brick-offset-left)
+            brick-y (+ (* r (+ brick-height brick-padding)) brick-offset-top)]
+        (aset bricks c r "x" brick-x)
+        (aset bricks c r "y" brick-y)
+        (.beginPath ctx)
+        (.rect ctx brick-x brick-y brick-width brick-height)
+        (aset ctx "fillStyle" "#0095DD")
+        (.fill ctx)
+        (.closePath ctx)))))
+
 (defn draw []
   (.clearRect ctx 0 0 (. canvas -width) (. canvas -height))
+  (draw-bricks)
   (draw-ball)
   (draw-paddle)
 
