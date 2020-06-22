@@ -34,7 +34,7 @@
 (dotimes [c brick-column-count]
   (aset bricks c (clj->js []))
   (dotimes [r brick-row-count]
-    (aset bricks c r (js-obj "x" 0 "y"))))
+    (aset bricks c r (js-obj "x" 0 "y" 0 "status" 1))))
 
 (defn key-down-handler [e]
   (let [pressed (. e -key)]
@@ -58,11 +58,14 @@
   (dotimes [r brick-row-count]
     (dotimes [c brick-column-count]
       (let [b (aget bricks c r)]
-        (if (and (> x (.-x b))
-                 (> y (.-y b))
-                 (> (+ (.-x b) brick-width) x)
-                 (> (+ (.-y b) brick-height) y))
-          (set! dy (- dy)))))))
+        (if (= (.-status b) 1)
+          (if (and (> x (.-x b))
+                   (> y (.-y b))
+                   (> (+ (.-x b) brick-width) x)
+                   (> (+ (.-y b) brick-height) y))
+            (do
+              (set! dy (- dy))
+              (aset bricks c r "status" 0))))))))
 
 
 (defn draw-ball []
@@ -82,15 +85,16 @@
 (defn draw-bricks []
   (dotimes [c brick-column-count]
     (dotimes [r brick-row-count]
-      (let [brick-x (+ (* c (+ brick-width brick-padding)) brick-offset-left)
-            brick-y (+ (* r (+ brick-height brick-padding)) brick-offset-top)]
-        (aset bricks c r "x" brick-x)
-        (aset bricks c r "y" brick-y)
-        (.beginPath ctx)
-        (.rect ctx brick-x brick-y brick-width brick-height)
-        (aset ctx "fillStyle" "#0095DD")
-        (.fill ctx)
-        (.closePath ctx)))))
+      (if (= (aget bricks c r "status") 1)
+        (let [brick-x (+ (* c (+ brick-width brick-padding)) brick-offset-left)
+              brick-y (+ (* r (+ brick-height brick-padding)) brick-offset-top)]
+          (aset bricks c r "x" brick-x)
+          (aset bricks c r "y" brick-y)
+          (.beginPath ctx)
+          (.rect ctx brick-x brick-y brick-width brick-height)
+          (aset ctx "fillStyle" "#0095DD")
+          (.fill ctx)
+          (.closePath ctx))))))
 
 (defn draw []
   (.clearRect ctx 0 0 (. canvas -width) (. canvas -height))
