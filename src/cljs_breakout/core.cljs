@@ -31,6 +31,7 @@
 
 (def bricks (clj->js []))
 
+;; loop 使う？
 (dotimes [c brick-column-count]
   (aset bricks c (clj->js []))
   (dotimes [r brick-row-count]
