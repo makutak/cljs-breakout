@@ -29,13 +29,19 @@
 (def brick-offset-top 30)
 (def brick-offset-left 30)
 
-(def bricks (clj->js []))
+;;(def bricks (clj->js []))
 
 ;; loop 使う？
-(dotimes [c brick-column-count]
-  (aset bricks c (clj->js []))
-  (dotimes [r brick-row-count]
-    (aset bricks c r (clj->js {:x 0 :y 0 :status 1}))))
+;; (dotimes [c brick-column-count]
+;;   (aset bricks c (clj->js []))
+;;   (dotimes [r brick-row-count]
+;;     (aset bricks c r (clj->js {:x 0 :y 0 :status 1}))))
+
+(def bricks (->> {:x 0 :y 0 :status 1}
+                 (repeat brick-row-count)
+                 (vec)
+                 (repeat brick-column-count)
+                 (vec)))
 
 (defn key-down-handler [e]
   (let [pressed (. e -key)]
@@ -58,15 +64,15 @@
 (defn collision-detection []
   (dotimes [r brick-row-count]
     (dotimes [c brick-column-count]
-      (let [b (aget bricks c r)]
-        (if (= (.-status b) 1)
-          (if (and (> x (.-x b))
-                   (> y (.-y b))
-                   (> (+ (.-x b) brick-width) x)
-                   (> (+ (.-y b) brick-height) y))
+      (let [b (get-in bricks [c r])]
+        (if (= (:status b) 1)
+          (if (and (> x (:x b))
+                   (> y (:y b))
+                   (> (+ (:x b) brick-width) x)
+                   (> (+ (:y b) brick-height) y))
             (do
               (set! dy (- dy))
-              (aset bricks c r "status" 0))))))))
+              (def bricks (assoc-in bricks [c r :status] 0)))))))))
 
 
 (defn draw-ball []
@@ -86,11 +92,11 @@
 (defn draw-bricks []
   (dotimes [c brick-column-count]
     (dotimes [r brick-row-count]
-      (if (= (aget bricks c r "status") 1)
+      (if (= (get-in bricks [c r :status]) 1)
         (let [brick-x (+ (* c (+ brick-width brick-padding)) brick-offset-left)
               brick-y (+ (* r (+ brick-height brick-padding)) brick-offset-top)]
-          (aset bricks c r "x" brick-x)
-          (aset bricks c r "y" brick-y)
+          (def bricks (assoc-in bricks [c r :x] brick-x))
+          (def bricks (assoc-in bricks [c r :y] brick-y))
           (.beginPath ctx)
           (.rect ctx brick-x brick-y brick-width brick-height)
           (aset ctx "fillStyle" "#0095DD")
