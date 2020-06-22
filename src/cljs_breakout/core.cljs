@@ -54,6 +54,17 @@
             (= "ArrowLeft" pressed))
       (set! left-pressed false))))
 
+(defn collision-detection []
+  (dotimes [r brick-row-count]
+    (dotimes [c brick-column-count]
+      (let [b (aget bricks c r)]
+        (if (and (> x (.-x b))
+                 (> y (.-y b))
+                 (> (+ (.-x b) brick-width) x)
+                 (> (+ (.-y b) brick-height) y))
+          (set! dy (- dy)))))))
+
+
 (defn draw-ball []
   (.beginPath ctx)
   (.arc ctx x y ball-radius 0 (* Math.PI 2))
@@ -86,6 +97,7 @@
   (draw-bricks)
   (draw-ball)
   (draw-paddle)
+  (collision-detection)
 
   ;; ボール y方向の跳ね返り
   (if (< (+ y dy) ball-radius)
