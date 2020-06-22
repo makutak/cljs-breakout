@@ -34,7 +34,7 @@
 (dotimes [c brick-column-count]
   (aset bricks c (clj->js []))
   (dotimes [r brick-row-count]
-    (aset bricks c r (js-obj "x" 0 "y" 0 "status" 1))))
+    (aset bricks c r (clj->js {:x 0 :y 0 :status 1}))))
 
 (defn key-down-handler [e]
   (let [pressed (. e -key)]
