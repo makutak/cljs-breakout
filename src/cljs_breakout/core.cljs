@@ -63,6 +63,13 @@
             (= "ArrowLeft" pressed))
       (set! left-pressed false))))
 
+(defn mouse-move-handler [e]
+  (let [relative-x (- (. e -clientX) (. canvas -offsetLeft))]
+    (*print-fn* relative-x)
+    (if (and (> relative-x 0)
+             (> (. canvas -width) relative-x))
+      (set! paddle-x (- relative-x (/ paddle-width 2))))))
+
 (defn collision-detection []
   (dotimes [r brick-row-count]
     (dotimes [c brick-column-count]
@@ -154,4 +161,5 @@
 
 (js/addEventListener "keydown" key-down-handler false)
 (js/addEventListener "keyup" key-up-handler false)
+(js/addEventListener "mousemove" mouse-move-handler false)
 (set! interval (js/setInterval draw 10))
