@@ -75,7 +75,11 @@
             (do
               (set! dy (- dy))
               (set! bricks (assoc-in bricks [c r :status] 0))
-              (set! score (inc score)))))))))
+              (set! score (inc score))
+              (if (= score (* brick-column-count brick-row-count))
+                (do
+                  (js/alert "YOU WIN. CONGRATULATIONS!")
+                  (.reload js/window.location))))))))))
 
 (defn draw-score []
   (aset ctx "font" "16px Arial")
