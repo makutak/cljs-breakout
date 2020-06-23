@@ -29,6 +29,8 @@
 (def brick-offset-top 30)
 (def brick-offset-left 30)
 
+(def score 0)
+
 ;;(def bricks (clj->js []))
 
 ;; loop 使う？
@@ -72,8 +74,13 @@
                    (> (+ (:y b) brick-height) y))
             (do
               (set! dy (- dy))
-              (def bricks (assoc-in bricks [c r :status] 0)))))))))
+              (def bricks (assoc-in bricks [c r :status] 0))
+              (set! score (inc score)))))))))
 
+(defn draw-score []
+  (aset ctx "font" "16px Arial")
+  (aset ctx "fillStyle" "#0095DD")
+  (.fillText ctx (str "score: " score) 8 20))
 
 (defn draw-ball []
   (.beginPath ctx)
@@ -108,6 +115,7 @@
   (draw-bricks)
   (draw-ball)
   (draw-paddle)
+  (draw-score)
   (collision-detection)
 
   ;; ボール y方向の跳ね返り
