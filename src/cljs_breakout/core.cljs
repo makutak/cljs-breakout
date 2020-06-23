@@ -74,7 +74,7 @@
                    (> (+ (:y b) brick-height) y))
             (do
               (set! dy (- dy))
-              (def bricks (assoc-in bricks [c r :status] 0))
+              (set! bricks (assoc-in bricks [c r :status] 0))
               (set! score (inc score)))))))))
 
 (defn draw-score []
@@ -102,8 +102,8 @@
       (if (= (get-in bricks [c r :status]) 1)
         (let [brick-x (+ (* c (+ brick-width brick-padding)) brick-offset-left)
               brick-y (+ (* r (+ brick-height brick-padding)) brick-offset-top)]
-          (def bricks (assoc-in bricks [c r :x] brick-x))
-          (def bricks (assoc-in bricks [c r :y] brick-y))
+          (set! bricks (assoc-in bricks [c r :x] brick-x))
+          (set! bricks (assoc-in bricks [c r :y] brick-y))
           (.beginPath ctx)
           (.rect ctx brick-x brick-y brick-width brick-height)
           (aset ctx "fillStyle" "#0095DD")
