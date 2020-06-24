@@ -9,8 +9,8 @@
 (def x (/ (. canvas -width) 2))
 (def y (- (. canvas -height) 30))
 
-(def dx 2)
-(def dy -2)
+(def dx 5)
+(def dy -5)
 
 (def ball-radius 10)
 
@@ -30,6 +30,7 @@
 (def brick-offset-left 30)
 
 (def score 0)
+(def lives 3)
 
 ;;(def bricks (clj->js []))
 
@@ -93,6 +94,11 @@
   (aset ctx "fillStyle" "#0095DD")
   (.fillText ctx (str "score: " score) 8 20))
 
+(defn draw-livs []
+  (aset ctx "font" "16px Arial")
+  (aset ctx "fillStyle" "#0095DD")
+  (.fillText ctx (str "Lives: " lives) (- (. canvas -width) 65) 20 ))
+
 (defn draw-ball []
   (.beginPath ctx)
   (.arc ctx x y ball-radius 0 (* Math.PI 2))
@@ -127,6 +133,7 @@
   (draw-ball)
   (draw-paddle)
   (draw-score)
+  (draw-livs)
   (collision-detection)
 
   ;; ボール y方向の跳ね返り
@@ -137,9 +144,18 @@
              (< x (+ paddle-x paddle-width)))
       (set! dy (- (+ dy 0.5)))
       (do
-        (js/alert "GAME OVER")
-        (.reload js/window.location)
-        (js/clearInterval interval))))
+        (set! lives (dec lives))
+        (*print-fn* lives)
+        (if (zero? lives)
+          (do
+            (js/alert "GAME OVER")
+            (.reload js/window.location))
+          (do
+            (set! x (/ (. canvas -width) 2))
+            (set! y (- (. canvas -height) 30))
+            (set! dx (* dy 1.5))
+            (set! dy (* dy -1.5))
+            (set! paddle-x (/ (- (. canvas -width) paddle-width) 2)))))))
 
   ;; ボール x方向の跳ね返り
   (if (or (< (+ x dx) ball-radius)
@@ -157,9 +173,11 @@
     (set! paddle-x (- paddle-x 7)))
 
   (set! x (+ x dx))
-  (set! y (+ y dy)))
+  (set! y (+ y dy))
+  (js/requestAnimationFrame draw))
 
 (js/addEventListener "keydown" key-down-handler false)
 (js/addEventListener "keyup" key-up-handler false)
 (js/addEventListener "mousemove" mouse-move-handler false)
-(set! interval (js/setInterval draw 10))
+;;(set! interval (js/setInterval draw 10))
+(draw)
