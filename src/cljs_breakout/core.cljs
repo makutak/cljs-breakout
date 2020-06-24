@@ -66,7 +66,6 @@
 
 (defn mouse-move-handler [e]
   (let [relative-x (- (. e -clientX) (. canvas -offsetLeft))]
-    (*print-fn* relative-x)
     (if (and (> relative-x 0)
              (> (. canvas -width) relative-x))
       (set! paddle-x (- relative-x (/ paddle-width 2))))))
@@ -145,7 +144,6 @@
       (set! dy (- (+ dy 0.5)))
       (do
         (set! lives (dec lives))
-        (*print-fn* lives)
         (if (zero? lives)
           (do
             (js/alert "GAME OVER")
