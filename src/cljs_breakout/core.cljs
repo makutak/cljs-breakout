@@ -34,14 +34,6 @@
 
 (def fill-style "#0095DD")
 
-;;(def bricks (clj->js []))
-
-;; loop 使う？
-;; (dotimes [c brick-column-count]
-;;   (aset bricks c (clj->js []))
-;;   (dotimes [r brick-row-count]
-;;     (aset bricks c r (clj->js {:x 0 :y 0 :status 1}))))
-
 (def bricks (->> {:x 0 :y 0 :status 1}
                  (repeat brick-row-count)
                  (vec)
@@ -179,5 +171,4 @@
 (js/addEventListener "keydown" key-down-handler false)
 (js/addEventListener "keyup" key-up-handler false)
 (js/addEventListener "mousemove" mouse-move-handler false)
-;;(set! interval (js/setInterval draw 10))
 (draw)
