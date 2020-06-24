@@ -9,8 +9,8 @@
 (def x (/ (. canvas -width) 2))
 (def y (- (. canvas -height) 30))
 
-(def dx 5)
-(def dy -5)
+(def dx 4)
+(def dy -4)
 
 (def ball-radius 10)
 
@@ -31,6 +31,8 @@
 
 (def score 0)
 (def lives 3)
+
+(def fill-style "#0095DD")
 
 ;;(def bricks (clj->js []))
 
@@ -90,25 +92,25 @@
 
 (defn draw-score []
   (aset ctx "font" "16px Arial")
-  (aset ctx "fillStyle" "#0095DD")
+  (aset ctx "fillStyle" fill-style)
   (.fillText ctx (str "score: " score) 8 20))
 
 (defn draw-livs []
   (aset ctx "font" "16px Arial")
-  (aset ctx "fillStyle" "#0095DD")
+  (aset ctx "fillStyle" fill-style)
   (.fillText ctx (str "Lives: " lives) (- (. canvas -width) 65) 20 ))
 
 (defn draw-ball []
   (.beginPath ctx)
   (.arc ctx x y ball-radius 0 (* Math.PI 2))
-  (aset ctx "fillStyle" "#0095DD")
+  (aset ctx "fillStyle" fill-style)
   (.fill ctx)
   (.closePath ctx))
 
 (defn draw-paddle []
   (.beginPath ctx)
   (.rect ctx paddle-x (- (. canvas -height) paddle-height) paddle-width paddle-height )
-  (aset ctx "fillStyle" "#0095DD")
+  (aset ctx "fillStyle" fill-style)
   (.fill ctx)
   (.closePath ctx))
 
@@ -122,7 +124,7 @@
           (set! bricks (assoc-in bricks [c r :y] brick-y))
           (.beginPath ctx)
           (.rect ctx brick-x brick-y brick-width brick-height)
-          (aset ctx "fillStyle" "#0095DD")
+          (aset ctx "fillStyle" fill-style)
           (.fill ctx)
           (.closePath ctx))))))
 
@@ -151,8 +153,8 @@
           (do
             (set! x (/ (. canvas -width) 2))
             (set! y (- (. canvas -height) 30))
-            (set! dx (* dy 1.5))
-            (set! dy (* dy -1.5))
+            (set! dx 4)
+            (set! dy -4)
             (set! paddle-x (/ (- (. canvas -width) paddle-width) 2)))))))
 
   ;; ボール x方向の跳ね返り
