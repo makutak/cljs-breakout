@@ -8,6 +8,7 @@
 
   :dependencies [[org.clojure/clojure "1.10.0"]
                  [org.clojure/clojurescript "1.10.773"]
+                 [com.bhauman/figwheel-main "0.2.9"]
                  [org.clojure/core.async  "0.4.500"]]
 
   :plugins [[lein-figwheel "0.5.20"]
@@ -95,4 +96,7 @@
                    :source-paths ["src" "dev"]
                    ;; need to add the compliled assets to the :clean-targets
                    :clean-targets ^{:protect false} ["resources/public/js/compiled"
-                                                     :target-path]}})
+                                                     :target-path]}}
+  :aliases {"fig" ["trampoline" "run" "-m" "figwheel.main"]})
+
+
