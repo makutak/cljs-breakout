@@ -21,9 +21,9 @@
 (def right-pressed false)
 (def left-pressed false)
 
-(def brick-row-count 3)
-(def brick-column-count 5)
-(def brick-width 75)
+(def brick-row-count 5)
+(def brick-column-count 10)
+(def brick-width 33)
 (def brick-height 20)
 (def brick-padding 10)
 (def brick-offset-top 30)
@@ -166,7 +166,8 @@
 
   (set! x (+ x dx))
   (set! y (+ y dy))
-  (js/requestAnimationFrame draw))
+  (js/requestAnimationFrame draw)
+  )
 
 (js/addEventListener "keydown" key-down-handler false)
 (js/addEventListener "keyup" key-up-handler false)
