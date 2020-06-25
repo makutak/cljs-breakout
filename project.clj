@@ -98,4 +98,6 @@
                    :clean-targets ^{:protect false} ["resources/public/js/compiled"
                                                      :target-path]}}
   :aliases {"fig" ["trampoline" "run" "-m" "figwheel.main"]
-            "fig:min"["run" "-m" "figwheel.main" "-O" "advanced" "-bo" "dev"]})
+            "fig:min" ["run" "-m" "figwheel.main" "-O" "advanced" "-bo" "dev"]
+            "fig:deploy" ["run" "-m" "figwheel.main" "-O" "advanced" "-bo" "deploy"]})
+
