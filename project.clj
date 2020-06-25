@@ -97,6 +97,5 @@
                    ;; need to add the compliled assets to the :clean-targets
                    :clean-targets ^{:protect false} ["resources/public/js/compiled"
                                                      :target-path]}}
-  :aliases {"fig" ["trampoline" "run" "-m" "figwheel.main"]})
-
-
+  :aliases {"fig" ["trampoline" "run" "-m" "figwheel.main"]
+            "fig:min"["run" "-m" "figwheel.main" "-O" "advanced" "-bo" "dev"]})
