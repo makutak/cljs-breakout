@@ -1,0 +1,2 @@
+{:main cljs-breakout.core
+ :output-to "docs/cljs-out/dev-main.js"}

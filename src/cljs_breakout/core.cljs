@@ -9,8 +9,8 @@
 (def x (/ (. canvas -width) 2))
 (def y (- (. canvas -height) 30))
 
-(def dx 2)
-(def dy -2)
+(def dx 4)
+(def dy -4)
 
 (def ball-radius 10)
 
@@ -21,23 +21,18 @@
 (def right-pressed false)
 (def left-pressed false)
 
-(def brick-row-count 3)
-(def brick-column-count 5)
-(def brick-width 75)
+(def brick-row-count 5)
+(def brick-column-count 10)
+(def brick-width 33)
 (def brick-height 20)
 (def brick-padding 10)
 (def brick-offset-top 30)
 (def brick-offset-left 30)
 
 (def score 0)
+(def lives 3)
 
-;;(def bricks (clj->js []))
-
-;; loop 使う？
-;; (dotimes [c brick-column-count]
-;;   (aset bricks c (clj->js []))
-;;   (dotimes [r brick-row-count]
-;;     (aset bricks c r (clj->js {:x 0 :y 0 :status 1}))))
+(def fill-style "#0095DD")
 
 (def bricks (->> {:x 0 :y 0 :status 1}
                  (repeat brick-row-count)
@@ -63,6 +58,12 @@
             (= "ArrowLeft" pressed))
       (set! left-pressed false))))
 
+(defn mouse-move-handler [e]
+  (let [relative-x (- (. e -clientX) (. canvas -offsetLeft))]
+    (if (and (> relative-x 0)
+             (> (. canvas -width) relative-x))
+      (set! paddle-x (- relative-x (/ paddle-width 2))))))
+
 (defn collision-detection []
   (dotimes [r brick-row-count]
     (dotimes [c brick-column-count]
@@ -83,20 +84,25 @@
 
 (defn draw-score []
   (aset ctx "font" "16px Arial")
-  (aset ctx "fillStyle" "#0095DD")
+  (aset ctx "fillStyle" fill-style)
   (.fillText ctx (str "score: " score) 8 20))
+
+(defn draw-livs []
+  (aset ctx "font" "16px Arial")
+  (aset ctx "fillStyle" fill-style)
+  (.fillText ctx (str "Lives: " lives) (- (. canvas -width) 65) 20 ))
 
 (defn draw-ball []
   (.beginPath ctx)
   (.arc ctx x y ball-radius 0 (* Math.PI 2))
-  (aset ctx "fillStyle" "#0095DD")
+  (aset ctx "fillStyle" fill-style)
   (.fill ctx)
   (.closePath ctx))
 
 (defn draw-paddle []
   (.beginPath ctx)
   (.rect ctx paddle-x (- (. canvas -height) paddle-height) paddle-width paddle-height )
-  (aset ctx "fillStyle" "#0095DD")
+  (aset ctx "fillStyle" fill-style)
   (.fill ctx)
   (.closePath ctx))
 
@@ -110,7 +116,7 @@
           (set! bricks (assoc-in bricks [c r :y] brick-y))
           (.beginPath ctx)
           (.rect ctx brick-x brick-y brick-width brick-height)
-          (aset ctx "fillStyle" "#0095DD")
+          (aset ctx "fillStyle" fill-style)
           (.fill ctx)
           (.closePath ctx))))))
 
@@ -120,6 +126,7 @@
   (draw-ball)
   (draw-paddle)
   (draw-score)
+  (draw-livs)
   (collision-detection)
 
   ;; ボール y方向の跳ね返り
@@ -130,9 +137,17 @@
              (< x (+ paddle-x paddle-width)))
       (set! dy (- (+ dy 0.5)))
       (do
-        (js/alert "GAME OVER")
-        (.reload js/window.location)
-        (js/clearInterval interval))))
+        (set! lives (dec lives))
+        (if (zero? lives)
+          (do
+            (js/alert "GAME OVER")
+            (.reload js/window.location))
+          (do
+            (set! x (/ (. canvas -width) 2))
+            (set! y (- (. canvas -height) 30))
+            (set! dx 4)
+            (set! dy -4)
+            (set! paddle-x (/ (- (. canvas -width) paddle-width) 2)))))))
 
   ;; ボール x方向の跳ね返り
   (if (or (< (+ x dx) ball-radius)
@@ -150,8 +165,11 @@
     (set! paddle-x (- paddle-x 7)))
 
   (set! x (+ x dx))
-  (set! y (+ y dy)))
+  (set! y (+ y dy))
+  (js/requestAnimationFrame draw)
+  )
 
 (js/addEventListener "keydown" key-down-handler false)
 (js/addEventListener "keyup" key-up-handler false)
-(set! interval (js/setInterval draw 10))
+(js/addEventListener "mousemove" mouse-move-handler false)
+(draw)
